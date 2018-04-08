@@ -1,6 +1,6 @@
 # todo-app
 
-> A Vue.js project
+> Todos app ---> basic vueJS
 
 ## Build Setup
 
@@ -17,4 +17,5 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+
 
