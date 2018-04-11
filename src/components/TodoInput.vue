@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Alfa+Slab+One|Comfortaa");
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 .container {
   width: 600px;
@@ -93,14 +93,16 @@ export default {
 }
 
 body,
+span,
 input {
-  font-size: 16px;
-  font-family: "Comfortaa", cursive;
+  font-size: 18px;
+  font-family: "Quicksand", sans-serif;
   color: #373635;
 }
 
 h1 {
-  font-family: "Alfa Slab One", cursive;
+  font-family: "Quicksand", sans-serif;
+  user-select: none;
 }
 
 #input-wraper .input-control {
@@ -112,7 +114,7 @@ h1 {
   width: 500px;
   padding: 10px;
   border: 1px solid #bbbbbb;
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: inherit;
 }
 
@@ -124,10 +126,10 @@ ul {
 li {
   list-style: none;
   display: block;
-  padding: 0 0 0 5px;
+  padding: 0 0 0 15px;
   margin-bottom: 5px;
   border-style: solid;
-  border-width: 0px 0px 0px 5px;
+  border-width: 1px 0px 1px 5px;
   border-color: #373635;
 }
 
@@ -136,7 +138,7 @@ li.completed {
 }
 
 li.completed:hover {
-    background: none;
+  background: none;
 }
 
 li:hover {
@@ -147,12 +149,21 @@ li:hover {
 li button {
   float: right;
   user-select: none;
-  border: 1px solid #d57b28;
-  background: #d57b28;
+  border: 1px solid #373635;
+  background: #373635;
   color: white;
-  border-radius: 0 3px 3px 0;
-  height: 30px;
-  width: 30px;
+  border-radius: 0;
+  height: 35px;
+  width: 35px;
+}
+
+li.completed button {
+  background: #bbbbbb;
+  border-color: #bbbbbb;
+}
+
+li.completed span {
+  color: #bbbbbb;
 }
 
 li button:hover {
@@ -168,7 +179,7 @@ li span {
   overflow: hidden;
   text-align: left;
   max-width: 500px;
-  line-height: 30px;
+  line-height: 35px;
 }
 
 .text-line-throught {
