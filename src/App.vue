@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <TodoInput/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import TodoInput from './components/TodoInput.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TodoInput
   }
 }
 </script>
