@@ -1,13 +1,12 @@
 <template>
   <div class="container" id="input-wraper">
-      <h1>TODOS</h1>
+      <h1>TODO APP</h1>
       <div class="input-control">
         <input type="text" v-model="txt" @keyup.enter="onSubmit" @keyup.esc="onClear">
       </div>
       <ul>
-        <li v-for="todo in todos" v-on:click="onComplete(todo)">
-            <span class="text-line-throught" v-if="todo.status === 1">{{todo.text}}</span>
-            <span v-else>{{todo.text}}</span>
+        <li :key="todo.id" v-for="todo in todos" v-on:click="onComplete(todo)" :class="{'completed': todo.status}" :title="todo.text">
+            <span v-bind:class="{'text-line-throught': todo.status}">{{todo.text}}</span>
             <button v-on:click="onDelete(todo)">X</button>
             <div class="clear-float"></div>
         </li>
@@ -24,21 +23,23 @@ export default {
   data: function() {
     return {
       txt: "",
-      todos: Utinities.getNotes(),
+      todos: Utinities.sortNotes(Utinities.getNotes()),
       nextID: Utinities.getNextId()
     };
   },
   methods: {
     onSubmit() {
       if (this.txt.trim() !== "") {
+        let time = Date.now();
         this.todos.push({
           id: this.nextID,
           text: this.txt,
-          status: 0
+          timestamp: time,
+          timestamp_human: new Date(time),
+          status: false
         });
 
-        this.todos = this.todos.sort((b, a) => a.id - b.id);
-
+        this.todos = Utinities.sortNotes(this.todos);
         Utinities.setNotes(this.todos);
         this.nextID++;
         this.txt = "";
@@ -57,10 +58,12 @@ export default {
         let index = todos.findIndex(function(element) {
           return element.id === todo.id;
         });
-        todo.status = todo.status === 0 ? 1 : 0;
+        todo.status = todo.status === true ? false : true;
         todos[index] = todo;
         this.todos = todos;
-        Utinities.setNotes(todos);
+
+        this.todos = Utinities.sortNotes(this.todos);
+        Utinities.setNotes(this.todos);
       }
     },
 
@@ -72,7 +75,9 @@ export default {
         });
         todos.splice(index, 1);
         this.todos = todos;
-        Utinities.setNotes(todos);
+
+        this.todos = Utinities.sortNotes(this.todos);
+        Utinities.setNotes(this.todos);
       }
     }
   }
@@ -80,14 +85,22 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css?family=Alfa+Slab+One|Comfortaa");
+
 .container {
   width: 600px;
   margin: auto;
 }
 
-body {
-  font-family: "Courier New", Courier, monospace;
+body,
+input {
   font-size: 16px;
+  font-family: "Comfortaa", cursive;
+  color: #373635;
+}
+
+h1 {
+  font-family: "Alfa Slab One", cursive;
 }
 
 #input-wraper .input-control {
@@ -98,14 +111,9 @@ body {
 #input-wraper input {
   width: 500px;
   padding: 10px;
-  border: 1px solid #9c9c9c;
-  color: black;
+  border: 1px solid #bbbbbb;
   border-radius: 10px;
   font-size: inherit;
-}
-
-.text-line-throught {
-  text-decoration: line-through;
 }
 
 ul {
@@ -116,38 +124,41 @@ ul {
 li {
   list-style: none;
   display: block;
-  padding: 10px;
+  padding: 0 0 0 5px;
+  margin-bottom: 5px;
   border-style: solid;
-  border-width: 1px 1px 0px 1px;
-  border-color: #e5e5e5;
+  border-width: 0px 0px 0px 5px;
+  border-color: #373635;
 }
 
-li:first-child {
-  border-radius: 5px 5px 0 0;
+li.completed {
+  border-color: #bbbbbb;
 }
 
-li:last-child {
-  border-width: 1px 1px 1px 1px;
-  border-radius: 0 0 5px 5px;
+li.completed:hover {
+    background: none;
 }
 
 li:hover {
-  background: #e5e5e5;
+  background: #eceff1;
+  cursor: pointer;
 }
 
 li button {
   float: right;
   user-select: none;
-  border: 1px solid green;
-  background: green;
+  border: 1px solid #d57b28;
+  background: #d57b28;
   color: white;
-  border-radius: 3px;
+  border-radius: 0 3px 3px 0;
+  height: 30px;
+  width: 30px;
 }
 
 li button:hover {
-  border: 1px solid red;
-  background: red;
-  color: white;
+  border: 1px solid #d32f2f;
+  background: #d32f2f;
+  cursor: pointer;
 }
 
 li span {
@@ -156,7 +167,12 @@ li span {
   display: block;
   overflow: hidden;
   text-align: left;
-  max-width: 400px;
+  max-width: 500px;
+  line-height: 30px;
+}
+
+.text-line-throught {
+  text-decoration: line-through;
 }
 
 .clear-float {
